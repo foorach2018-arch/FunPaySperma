@@ -95,10 +95,7 @@ class TGBot:
             "power_off": "cmd_power_off",
             "watermark": "cmd_watermark",
         }
-        self.__default_notification_settings = {
-            utils.NotificationTypes.ad: 1,
-            utils.NotificationTypes.announcement: 1
-        }
+        self.__default_notification_settings = {}
 
     # User states
     def get_state(self, chat_id: int, user_id: int) -> dict | None:
@@ -957,9 +954,7 @@ class TGBot:
         result = self.toggle_notification(chat_id, notification_type)
         logger.info(_("log_notification_switched", c.from_user.username, c.from_user.id,
                       notification_type, c.message.chat.id, result))
-        keyboard = kb.announcements_settings if notification_type in [utils.NotificationTypes.announcement,
-                                                                      utils.NotificationTypes.ad] \
-            else kb.notifications_settings
+        keyboard = kb.notifications_settings
         self.bot.edit_message_reply_markup(c.message.chat.id, c.message.id,
                                            reply_markup=keyboard(self.badtrip, c.message.chat.id))
         self.bot.answer_callback_query(c.id)
@@ -1003,12 +998,6 @@ class TGBot:
         Отправляет сообщение о том, что параметр отключен в глобальных переключателях.
         """
         self.bot.answer_callback_query(c.id, _("param_disabled"), show_alert=True)
-
-    def send_announcements_kb(self, m: Message):
-        """
-        Отправляет сообщение с клавиатурой управления уведомлениями о новых объявлениях.
-        """
-        self.bot.send_message(m.chat.id, _("desc_an"), reply_markup=kb.announcements_settings(self.badtrip, m.chat.id))
 
     def send_review_reply_text(self, c: CallbackQuery):
         stars = int(c.data.split(":")[1])
@@ -1092,7 +1081,6 @@ class TGBot:
         self.msg_handler(self.send_system_info, commands=["sys"])
         self.msg_handler(self.restart_badtrip, commands=["restart"])
         self.msg_handler(self.ask_power_off, commands=["power_off"])
-        self.msg_handler(self.send_announcements_kb, commands=["announcements"])
         self.cbq_handler(self.send_review_reply_text, lambda c: c.data.startswith(f"{CBT.SEND_REVIEW_REPLY_TEXT}:"))
 
         self.cbq_handler(self.act_send_funpay_message, lambda c: c.data.startswith(f"{CBT.SEND_FP_MESSAGE}:"))
@@ -1133,8 +1121,7 @@ class TGBot:
             kwargs["reply_markup"] = keyboard
         to_delete = []
         for chat_id in self.notification_settings:
-            if notification_type != utils.NotificationTypes.important_announcement and \
-                    not self.is_notification_enabled(chat_id, notification_type):
+            if not self.is_notification_enabled(chat_id, notification_type):
                 continue
 
             try:

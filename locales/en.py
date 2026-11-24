@@ -163,10 +163,6 @@ lnk_github = "🛠️ BadTrip sources"
 lnk_updates = "🔄 Updates"
 lnk_chat = "💬 Chat"
 
-# Announcements
-an_an = "{} Announcements"
-an_ad = "{} Ads"
-
 # New order
 ord_refund = "💸 Refund"
 ord_open = "🌐 Open order"
@@ -442,7 +438,6 @@ desc_mv = "The look of new-message notifications is tuned here."
 desc_gr = "Greetings for new users are tuned here.\n\n<b>Greeting text:</b>\n<code>{}</code>"
 desc_oc = "The order confirmation reply is tuned here.\n\n<b>Message text:</b>\n<code>{}</code>"
 desc_or = "Review replies are tuned here."
-desc_an = "Announcement notifications are tuned here."
 desc_cfg = "Configs are downloaded and uploaded back here."
 desc_tmplt = "Reply templates are added and wiped here."
 desc_pl = "Plugin info and settings live here.\n\n" \

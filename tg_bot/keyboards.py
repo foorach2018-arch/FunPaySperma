@@ -305,27 +305,6 @@ def notifications_settings(c: BadTrip, chat_id: int) -> K:
     return kb
 
 
-def announcements_settings(c: BadTrip, chat_id: int):
-    """
-    Генерирует клавиатуру настроек уведомлений объявлений.
-
-    :param c: объект бота.
-    :param chat_id: ID чата, в котором вызвана клавиатура.
-
-    :return: объект клавиатуры настроек уведомлений объявлений.
-    """
-    p = f"{CBT.SWITCH_TG_NOTIFICATIONS}:{chat_id}"
-    n = NotificationTypes
-
-    def l(nt):
-        return '🔔' if c.telegram.is_notification_enabled(chat_id, nt) else '🔕'
-
-    kb = K() \
-        .row(B(_("an_an", l(n.announcement)), None, f"{p}:{n.announcement}"),
-             B(_("an_ad", l(n.ad)), None, f"{p}:{n.ad}"))
-    return kb
-
-
 def blacklist_settings(c: BadTrip) -> K:
     """
     Генерирует клавиатуру настроек черного списка (CBT.CATEGORY:blockList).
