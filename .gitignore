@@ -1,0 +1,13 @@
+# секреты и приватные данные
+configs/_main.cfg
+
+# runtime-мусор
+logs/
+storage/
+backup.zip
+update/
+
+# python
+__pycache__/
+*.pyc
+.venv/

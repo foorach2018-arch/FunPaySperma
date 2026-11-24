@@ -1,0 +1,12 @@
+services:
+  badtrip:
+    build: .
+    container_name: badtrip
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+      - ./storage:/app/storage
+      - ./plugins:/app/plugins

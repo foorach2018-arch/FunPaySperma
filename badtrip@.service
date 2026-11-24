@@ -1,0 +1,39 @@
+[Install]
+WantedBy=multi-user.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/%i/BadTrip
+ExecStart=/home/%i/pyvenv/bin/python /home/%i/BadTrip/main.py
+Restart=always
+RestartSec=10s
+SyslogIdentifier=BadTrip-%i
+User=%i
+Environment="LANG=en_US.utf8"
+Environment="BadTrip_IS_RUNNIG_AS_SERVICE=1"
+
+ExecStartPre=+/usr/bin/install -m 755 -o root -g root -d /run/BadTrip
+ExecStartPre=+/usr/bin/install -m 755 -o %i -g root -d /run/BadTrip/%i
+
+PIDFile=/run/BadTrip/%i/BadTrip.pid
+
+# BadTrip security hardening, all of the below entries are optional, but their existence improves security of your system
+# * As stated above this entries are optional, if some of the below entries are not supported by your system, you can safely remove them
+# * If something doesn't work, you can try to remove some of the below entries, but please do it one by one, so you can identify which entry is causing the issue
+DevicePolicy=closed
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateMounts=yes
+PrivateTmp=yes
+PrivateUsers=yes
+ProtectHostname=yes
+# Prevent writes to /usr, /boot, and /etc
+ProtectSystem=full
+ReadWritePaths=/home/%i/BadTrip /home/%i/pyvenv -/run/BadTrip
+# Prevent other services from accessing PID file
+# UMask=0077
+# End of BadTrip security hardening
+
+[Unit]
+After=network.target
+Description=BadTrip Bot Service (on %I)
